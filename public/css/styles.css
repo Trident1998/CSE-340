@@ -119,6 +119,7 @@ main h1 {
 
 .hero-info p {
   font-size: 22px;
+  font-weight: bold;
 }
 
 .hero-info img {
