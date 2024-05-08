@@ -11,6 +11,7 @@ const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 const { title } = require("process")
+const baseController = require(".controller/baseController")
 
 /* ***********************
  * View Engine and Templates
@@ -39,6 +40,4 @@ app.listen(port, () => {
 })
 
 
-app.get("/", function(req, res) {
-  res.render("index", {title: "Home"})
-})
+app.get("/", baseController.buildHome)
