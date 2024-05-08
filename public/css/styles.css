@@ -73,6 +73,10 @@ a {
   color: var(--primary-color);
 }
 
+#wrappeer nav ul li a {
+  color: var(--primary-color);
+}
+
 main {
   text-decoration: none;
   line-height: 150%;
