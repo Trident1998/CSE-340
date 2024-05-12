@@ -13,6 +13,8 @@ const static = require("./routes/static")
 const { title } = require("process")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
+const errorRouts = require("./routes/errorRoute")
+const errorControler = require("./controllers/errorController");
 
 /* ***********************
  * View Engine and Templates
@@ -27,6 +29,18 @@ app.set("layout", "./layouts/layout") // not at views root
 app.use(static)
 // Inventory routes
 app.use("/inv", inventoryRoute)
+app.use(errorRouts)
+
+// <= handle 404 errors here
+app.use(function(req, res, next) {
+  const err = new Error("Sorry, that route doesn't exist.");
+  err.status = 404
+  next(err)
+});
+
+app.use(function(err, req, res, next) {
+  errorControler.errorHandler(err, res)
+});
 
 /* ***********************
  * Local Server Information
