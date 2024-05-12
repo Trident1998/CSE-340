@@ -33,6 +33,10 @@ a {
   text-decoration: none;
 }
 
+ul {
+  list-style-type: none;
+}
+
 #wrappeer {
   text-decoration: none;
   line-height: 150%;
@@ -184,3 +188,55 @@ main h1 {
   font-size: 20px;
   line-height: 170%;
 }
+
+#inv-display {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: center;
+  justify-content: space-around;
+  align-items: stretch;
+  padding: 0;
+  text-align: center;
+}
+
+#inv-display li {
+  width: 250px;
+  border: 2px solid #999;
+  border-radius: 15px;
+  overflow: hidden;
+  min-height: 300px;
+  margin-bottom: 20px;
+}
+
+#inv-display li a {
+  max-height: 150px;
+}
+
+#inv-display li img {
+  width: 100%;
+  height: auto;
+  min-height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.namePrice hr {
+  border: none;
+  border-top: 3px solid black;
+  color: #999;
+  background-color: #fff;
+  margin: 10px 0;
+}
+
+.namePrice h2 a {
+  font-size: 20px;
+  text-decoration: underline;
+  text-decoration-color: var(blue);
+  color: blue;
+}
+
+/* .namePrice p {
+  margin-top: 40px;
+  font-size: 18px;
+} */
