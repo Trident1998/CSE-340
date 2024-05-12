@@ -236,7 +236,37 @@ main h1 {
   color: blue;
 }
 
-/* .namePrice p {
-  margin-top: 40px;
+.inventory-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: start;
+  align-items: start;
+}
+
+.inventory-container img {
+  width: 100%;
+  height: auto;
+}
+
+.inventory-container h2 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+.inventory-container h3 {
+  font-size: 22px;
+}
+
+.inventory-container p {
   font-size: 18px;
-} */
+}
+
+.inventory-details {
+  padding: 0 15px;
+}
+
+.gray {
+  background-color: #f0f0f0; 
+  padding: 5px; 
+}
+

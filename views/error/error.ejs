@@ -1,0 +1,11 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+    
+    <%# messages() %>
+    
+    <%- errorCoode %>
+
+    <img src="images/error_image.jpeg" alt="error image">
