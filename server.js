@@ -31,17 +31,6 @@ app.use(static)
 app.use("/inv", inventoryRoute)
 app.use(errorRouts)
 
-// <= handle 404 errors here
-app.use(function(req, res, next) {
-  const err = new Error("Sorry, that route doesn't exist.");
-  err.status = 404
-  next(err)
-});
-
-app.use(function(err, req, res, next) {
-  errorControler.errorHandler(err, res)
-});
-
 /* ***********************
  * Local Server Information
  * Values from .env (environment) file
@@ -58,3 +47,14 @@ app.listen(port, () => {
 
 
 app.get("/", baseController.buildHome)
+
+// <= handle 404 errors here
+app.use(function(req, res, next) {
+  const err = new Error("Sorry, that route doesn't exist.");
+  err.status = 404
+  next(err)
+});
+
+app.use(function(err, req, res, next) {
+  errorControler.errorHandler(err, res)
+});
