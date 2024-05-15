@@ -8,6 +8,8 @@
 const expressLayouts = require("express-ejs-layouts")
 const express = require("express")
 const session = require("express-session")
+const bodyParser = require("body-parser")
+const flash = require('express-flash')
 const pool = require('./database/')
 const env = require("dotenv").config()
 const app = express()
@@ -18,6 +20,7 @@ const inventoryRoute = require("./routes/inventoryRoute")
 const errorRouts = require("./routes/errorRoute")
 const errorControler = require("./controllers/errorController");
 const accountRoute = require("./routes/accountRoute");
+const utilities = require("./utilities")
 
 
 /* ***********************
@@ -40,10 +43,13 @@ app.use(session({
   saveUninitialized: true,
   name: 'sessionId',
 }))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) 
 
 /* ***********************
  * Routes
  *************************/
+app.use(flash());
 app.use(static)
 // Inventory routes
 app.use("/inv", inventoryRoute)
@@ -65,7 +71,8 @@ app.listen(port, () => {
 })
 
 
-app.get("/", baseController.buildHome)
+app.get("/", utilities.handleErrors(baseController.buildHome))
+
 
 // <= handle 404 errors here
 app.use(function(req, res, next) {
