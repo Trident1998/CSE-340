@@ -7,28 +7,22 @@ const invCont = {}
  *  Build inventory by classification view
  * ************************** */
 invCont.buildByClassificationId = async function (req, res, next) {
-  try {
-    const classification_id = req.params.classificationId
-    const data = await invModel.getInventoryByClassificationId(classification_id)
-    const grid = await utilities.buildClassificationGrid(data)
-    let nav = await utilities.getNav()
-    const className = data[0].classification_name
-    res.render("./inventory/classification", {
-      title: className + " vehicles",
-      nav,
-      grid,
-    })
-  } catch (err) {
-    next(err)
-  }
-
+  const classification_id = req.params.classificationId
+  const data = await invModel.getInventoryByClassificationId(classification_id)
+  const grid = await utilities.buildClassificationGrid(data)
+  let nav = await utilities.getNav()
+  const className = data[0].classification_name
+  res.render("./inventory/classification", {
+    title: className + " vehicles",
+    nav,
+    grid,
+  })
 }
 
 /* ***************************
  *  Build inventory details vieew  by inventory Id
  * ************************** */
 invCont.buildIventoryDeetailsByInventoryId = async function (req, res, next) {
-  try {
     const inv_id = req.params.inventoryId
     const data = await invModel.getInventoryByInnventoryId(inv_id)
     const grid = await utilities.buildInvetoryDetailHtml(data[0])
@@ -39,9 +33,6 @@ invCont.buildIventoryDeetailsByInventoryId = async function (req, res, next) {
       nav,
       grid,
     })
-  } catch {
-    next(err)
-  }
 }
 
 module.exports = invCont

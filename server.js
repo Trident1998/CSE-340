@@ -74,6 +74,11 @@ app.use(function(req, res, next) {
   next(err)
 });
 
-app.use(function(err, req, res, next) {
+/* ***********************
+* Express Error Handler
+* Place after all other middleware
+*************************/
+app.use(async (err, req, res, next) => {
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
   errorControler.errorHandler(err, res)
-});
+})

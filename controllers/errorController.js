@@ -4,12 +4,7 @@ const utilities = require("../utilities/")
 const errorController = {}
 
 errorController.triggerError = (req, res, next) => {
-    try {
-      // Intentionally causing an error to trigger 500-type error
-      throw new Error('Internal error triggered');
-    } catch (err) {
-      next(err);
-    }
+    throw new Error('Internal error triggered');
   };
 
   errorController.errorHandler = async (err, res) => {
