@@ -232,7 +232,7 @@ main h1 {
 .namePrice h2 a {
   font-size: 20px;
   text-decoration: underline;
-  text-decoration-color: var(blue);
+  text-decoration-color: blue;
   color: blue;
 }
 
@@ -273,4 +273,64 @@ main h1 {
 .error {
   width: 100%;
   height: auto;
+}
+
+.form-container {
+  background-color: #2b3e50;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.form-container h2 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.form-container label {
+  display: block;
+  color: #fff;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.form-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 4px;
+}
+
+.form-container input[type="email"], .login-container input[type="password"] {
+  background-color: #e8e8e8;
+}
+
+.form-container button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+}
+
+.form-container button:hover {
+  background-color: #45a049;
+}
+
+.form-container a {
+  color: #4CAF50;
+  text-decoration: none;
+  display: block;
+  margin-top: 20px;
+}
+
+.form-container a:hover {
+  text-decoration: underline;
 }
