@@ -351,3 +351,8 @@ input:required:valid {
   background-position: right 10px center;
   background-size: 20px 20px;
 }
+
+.notice{
+  color: red;
+  font-weight: bold;
+}
