@@ -10,6 +10,7 @@ errorController.triggerError = (req, res, next) => {
   errorController.errorHandler = async (err, res) => {
     let nav = await utilities.getNav()
     err.status = err.status || 500
+    err.message = err.status == 500 ? "Internal Serveer Error" : err.message
     const image = `<img class="error" src="images/error_image.jpeg" alt="error image">`
 
     res.render("./error/error", {
