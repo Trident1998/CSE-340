@@ -66,10 +66,10 @@ Util.buildInvetoryDetailHtml = async function(data){
       <img src="${data.inv_thumbnail}" alt="Image of ${data.inv_make} ${data.inv_model} on CSE Motors" />
       <div class="inventory-details">
         <h2>${data.inv_make} ${data.inv_model} Details</h2>
-        <h3 class="gray">Price: $${data.inv_price}</h3>
-        <p><strong>Description:</strong> $${data.inv_description}</p>
-        <p class="gray"><strong>Color:</strong> $${data.inv_color}</p>
-        <p><strong>Miles:</strong> $${data.inv_miles}</p>
+        <h3 class="gray">Price: $${new Intl.NumberFormat('en-US').format(data.inv_price)}</h3>
+        <p><strong>Description:</strong> ${data.inv_description}</p>
+        <p class="gray"><strong>Color:</strong> ${data.inv_color}</p>
+        <p><strong>Miles:</strong> ${data.inv_miles}</p>
       </div>
     </section>`
   } else { 
@@ -84,5 +84,25 @@ Util.buildInvetoryDetailHtml = async function(data){
  * General Error Handling
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+
+Util.buildClassificationList = async function (classification_id = null) {
+  let data = await invModel.getClassifications()
+  let classificationList =
+    '<select name="classification_id" id="classificationList" required>'
+  classificationList += "<option value=''>Choose a Classification</option>"
+  data.rows.forEach((row) => {
+    classificationList += '<option value="' + row.classification_id + '"'
+    if (
+      classification_id != null &&
+      row.classification_id == classification_id
+    ) {
+      classificationList += " selected "
+    }
+    classificationList += ">" + row.classification_name + "</option>"
+  })
+  classificationList += "</select>"
+  return classificationList
+}
 
 module.exports = Util

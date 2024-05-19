@@ -43,12 +43,14 @@ invCont.buildManagement = async (req, res) => {
   res.render('inventory/management', { 
     title: "Vehical Menegment",
     nav,
-    flashMessage });
+    flashMessage,
+    errors: null,
+   });
 };
 
 invCont.showAddClassification = async (req, res) => {
   const flashMessage = req.flash('message');
-  const errorMessage = req.flash('error');
+  const e = req.flash('error');
 
   let nav = await utilities.getNav()
 
@@ -56,7 +58,8 @@ invCont.showAddClassification = async (req, res) => {
     title: "Add Classification",
     nav,
     flashMessage, 
-    errorMessage });
+    errors: null,
+  });
 };
 
 
@@ -81,5 +84,59 @@ invCont.addClassification = async (req, res) => {
     })
   }
 };
+
+
+invCont.showAddInventory = async (req, res) => {
+  let nav = await utilities.getNav()
+  const classificationList = await utilities.buildClassificationList();
+  const flashMessage = req.flash('message');
+  const errors = req.flash('error');
+
+  res.render('inventory/add-inventory', { 
+    title: "Add Inventory",
+    nav,
+    classificationList, 
+    flashMessage, 
+    errors: null,
+  });
+};
+
+invCont.addInventory = async (req, res) => {
+  const nav = await utilities.getNav()
+  const classificationList = await utilities.buildClassificationList();
+
+  const {
+      classification_id,
+      make,
+      model,
+      year,
+      description,
+      image_path,
+      thumbnail_path,
+      price,
+      miles,
+      color
+  } = req.body;
+
+  const regResult = await invModel.addInventory(classification_id, make, model, year, description, image_path, 
+    thumbnail_path, price, miles, color)
+
+  if (regResult) {
+    req.flash(
+      "notice",
+      `Congratulations, you\'re added a new invetory.`
+    )
+    res.status(201).redirect('/');
+  } else {
+    req.flash("notice", "Sorry, the procces to add invetory failed.")
+    res.status(501).render("inventory/add-inventory", {
+      title: "Add Inventory",
+      nav,
+      classificationList, 
+      errors: null,
+  })
+}
+};
+
 
 module.exports = invCont

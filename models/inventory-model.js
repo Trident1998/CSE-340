@@ -37,6 +37,31 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
+/* ***************************
+ *  Add inventory data
+ * ************************** */
+async function addInventory(classification_id, make, model, year, description, image_path, 
+  thumbnail_path, price, miles, color){
+  try {
+    const sql = `INSERT INTO inventory (
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id
+    )
+   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`
+    return await pool.query(sql, [make, model, year, description, image_path, 
+      thumbnail_path, price, miles, color, classification_id])
+  } catch (error) {
+    return error.message
+  }
+}
 
 /* ***************************
  *  Get all inventory deteils by inv_id
@@ -55,6 +80,4 @@ async function getInventoryByInnventoryId(inv_id) {
 }
 
 
-
-
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByInnventoryId, addClassification };
+module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByInnventoryId, addClassification, addInventory };

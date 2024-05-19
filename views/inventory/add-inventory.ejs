@@ -1,0 +1,48 @@
+<% if (flashMessage) { %>
+    <div class="flash-message"><%= flashMessage %></div>
+<% } %>
+
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+
+<div class="form-container">
+    <form name="inventoryForm" action="/inv/add-inventory" method="POST">
+        <label for="classificationList">Classification:</label>
+        <%- classificationList %>
+
+        <label for="make">Make:</label>
+        <input type="text" id="make" name="make" required minlength="3" value="<%= locals.make %>" placeholder="Min of 3 characters">
+
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" minlength="3" required value="<%= locals.model %>" placeholder="Min of 3 characters">
+
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="year" required value="<%= locals.year %>" pattern="[0-9]{4}" placeholder="4-digit year">
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required value="<%= locals.description %>"></textarea>
+        
+        <label for="image_path">Image Path:</label>
+        <input type="text" id="image_path" name="image_path" required value="<%= locals.image_path || '/images/vehicles/no-image.png' %>">
+
+        <label for="thumbnail_path">Thumbnail Path:</label>
+        <input type="text" id="thumbnail_path" name="thumbnail_path" value="<%= locals.thumbnail_path  || '/images/vehicles/no-image.png' %>" required>
+
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" required pattern="^\d+(\.\d{2})?$" value="<%= locals.price %>" placeholder="decimal or integer">
+
+        <label for="miles">Miles:</label>
+        <input type="text" id="miles" name="miles" required pattern="[0-9]+" value="<%= locals.miles %>" placeholder="digits only">
+
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color" required value="<%= locals.color %>">
+
+
+        <button type="submit">Add Inventory</button>
+    </form>
+</div>
