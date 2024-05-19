@@ -69,7 +69,7 @@ Util.buildInvetoryDetailHtml = async function(data){
         <h3 class="gray">Price: $${new Intl.NumberFormat('en-US').format(data.inv_price)}</h3>
         <p><strong>Description:</strong> ${data.inv_description}</p>
         <p class="gray"><strong>Color:</strong> ${data.inv_color}</p>
-        <p><strong>Miles:</strong> ${data.inv_miles}</p>
+        <p><strong>Miles:</strong> ${new Intl.NumberFormat('en-US').format(data.inv_miles)}</p>
       </div>
     </section>`
   } else { 
