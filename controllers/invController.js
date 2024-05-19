@@ -1,5 +1,6 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
+const regValidate = require('../utilities/account-validation')
 
 const invCont = {}
 
@@ -34,5 +35,51 @@ invCont.buildIventoryDeetailsByInventoryId = async function (req, res, next) {
       grid,
     })
 }
+
+invCont.buildManagement = async (req, res) => {
+  const flashMessage = req.flash('message');
+  let nav = await utilities.getNav()
+
+  res.render('inventory/management', { 
+    title: "Vehical Menegment",
+    nav,
+    flashMessage });
+};
+
+invCont.showAddClassification = async (req, res) => {
+  const flashMessage = req.flash('message');
+  const errorMessage = req.flash('error');
+
+  let nav = await utilities.getNav()
+
+  res.render('inventory/add-classification', {     
+    title: "Add Classification",
+    nav,
+    flashMessage, 
+    errorMessage });
+};
+
+
+invCont.addClassification = async (req, res) => {
+  let nav = await utilities.getNav()
+  const { classification_name } = req.body
+
+  const regResult = await invModel.addClassification(classification_name)
+
+  if (regResult) {
+    req.flash(
+      "notice",
+      `Congratulations, you\'re added ${classification_name}.`
+    )
+    res.status(201).redirect('/');
+  } else {
+    req.flash("notice", "Sorry, the procces to add clasification failed.")
+    res.status(501).render("account/register", {
+      title: "Add Classification",
+      nav,
+      errors: null,
+    })
+  }
+};
 
 module.exports = invCont
