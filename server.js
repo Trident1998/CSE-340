@@ -8,6 +8,7 @@
 const expressLayouts = require("express-ejs-layouts")
 const express = require("express")
 const session = require("express-session")
+const cookieParser = require("cookie-parser")
 const bodyParser = require("body-parser")
 const flash = require('express-flash')
 const pool = require('./database/')
@@ -45,6 +46,8 @@ app.use(session({
 }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) 
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * Routes
