@@ -379,3 +379,133 @@ input:required:valid {
   background-color: #f9f9f9;
   resize: vertical; /* Allows vertical resize only */
 }
+
+/* Basic styling for the select element */
+#classificationList {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+/* Add some padding and spacing for the options */
+#classificationList option {
+  padding: 10px;
+  background-color: #fff;
+}
+
+/* Styling for the placeholder option */
+#classificationList option[value=""] {
+  color: #999;
+}
+
+/* Change the border color on focus */
+#classificationList:focus {
+  border-color: #66afe9;
+  box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+}
+
+/* Styling the dropdown arrow */
+#classificationList::after {
+  content: '▼';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #999;
+}
+
+/* Position the select element relative to the arrow */
+#classificationList {
+  position: relative;
+}
+
+/* Ensuring the dropdown arrow is visible on focus */
+#classificationList:focus::after {
+  color: #66afe9;
+}
+
+/* Additional styling for hover effect */
+#classificationList:hover {
+  border-color: #888;
+}
+
+/* Basic table styling */
+#inventoryDisplay {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* Table header styling */
+#inventoryDisplay thead {
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #ddd;
+}
+
+#inventoryDisplay thead th {
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+  border-right: 1px solid #ddd;
+}
+
+#inventoryDisplay thead td {
+  border-right: 1px solid #ddd;
+}
+
+/* Table body styling */
+#inventoryDisplay tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#inventoryDisplay tbody td {
+  padding: 10px;
+  text-align: left;
+  border-right: 1px solid #ddd;
+}
+
+/* Links styling */
+#inventoryDisplay tbody a {
+  color: #3498db;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+#inventoryDisplay tbody a[title="Click to update"] {
+  background-color: #f0ad4e;
+  color: #fff;
+}
+
+#inventoryDisplay tbody a[title="Click to delete"] {
+  background-color: #d9534f;
+  color: #fff;
+}
+
+#inventoryDisplay tbody a:hover {
+  background-color: #2980b9;
+  color: #fff;
+}
+
+/* Alternate row coloring */
+#inventoryDisplay tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Hover effect for table rows */
+#inventoryDisplay tbody tr:hover {
+  background-color: #f1f1f1;
+}
+

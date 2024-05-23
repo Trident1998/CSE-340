@@ -92,25 +92,6 @@ validate.loginnRules = () => {
           throw new Error("Email does not exist. Please sin up")
         }
       }),
-  
-      // password is required and must be strong password
-      body("account_password")
-        .trim()
-        .notEmpty()
-        .isStrongPassword({
-          minLength: 12,
-          minLowercase: 1,
-          minUppercase: 1,
-          minNumbers: 1,
-          minSymbols: 1,
-        })
-        .withMessage("Password does not meet requirements.")
-        .custom(async (account_password) => {
-          const passwordExists = await accountModel.checkPassword(account_password)
-          if (!passwordExists){
-            throw new Error("Wrong password plwase try again.")
-          }
-        }),
     ]
   }
 

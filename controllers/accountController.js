@@ -111,11 +111,15 @@ async function accountLogin(req, res) {
 * *************************************** */
 async function buildAcountManagment(req, res, next) {
   let nav = await utilities.getNav()
-  res.render("./account/menegment", {
+  if(req.cookies.jwt) {
+      res.render("./account/menegment", {
     title: "Login",
     nav,
     errors: null,
   })
+  }
+  req.flash("notice", "Please login.")
+  res.redirect("/account/login")
 }
  
   module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAcountManagment }
