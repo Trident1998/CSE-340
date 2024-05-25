@@ -15,6 +15,10 @@ router.get("/edit/:inventoryId", utilities.handleErrors(invController.buildEditI
 
 router.post("/update", invController.updateInventory)
 
+router.get("/delete/:inventoryId", invController.buildDeleteIventoryDeetailsByInventoryId)
+
+router.post("/delete", invController.deleteInventory)
+
 router.get("/", utilities.handleErrors(invController.buildManagement));
 
 router.get("/add-classification", utilities.handleErrors(invController.showAddClassification));
