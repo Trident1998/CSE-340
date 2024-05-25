@@ -1,0 +1,47 @@
+<h1><%- title %></h1>
+
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+
+<div class="form-container">
+    <form name="inventoryForm" action="/inv/update" method="POST">
+        <label for="classificationList">Classification:</label>
+        <%- classificationList %>
+
+        <label for="make">Make:</label>
+        <input type="text" id="make" name="make" required minlength="3" value="<%= locals.make || inv_make%>" placeholder="Min of 3 characters">
+
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" minlength="3" required value="<%= locals.model || inv_model %>" placeholder="Min of 3 characters">
+
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="year" required value="<%= locals.year || inv_year %>" pattern="[0-9]{4}" placeholder="4-digit year">
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required><%= locals.description || inv_description %></textarea>
+        
+        <label for="image_path">Image Path:</label>
+        <input type="text" id="image_path" name="image_path" required value="<%= locals.image_path || inv_image %>">
+
+        <label for="thumbnail_path">Thumbnail Path:</label>
+        <input type="text" id="thumbnail_path" name="thumbnail_path" value="<%= locals.thumbnail_path  || inv_thumbnail %>" required>
+
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" required pattern="^\d+(\.\d{2})?$" value="<%= locals.price || inv_price %>" placeholder="decimal or integer">
+
+        <label for="miles">Miles:</label>
+        <input type="text" id="miles" name="miles" required pattern="[0-9]+" value="<%= locals.miles || inv_miles %>" placeholder="digits only">
+
+        <label for="color">Color:</label>
+        <input type="text" id="color" name="color" required value="<%= locals.color || inv_color %>">
+
+        <input type="hidden" id="inv_id" name="inv_id" value="<%= locals.inv_id || inv_id %>">
+
+        <button type="submit">Update Vehicle</button>
+    </form>
+</div>
