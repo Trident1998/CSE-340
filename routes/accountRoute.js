@@ -12,6 +12,8 @@ router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
 router.get("/register", utilities.handleErrors(accountController.buildRegister));
 
+router.get("/verify-token", utilities.handleErrors(accountController.verifyToken));
+
 router.post(
   "/register",
   regValidate.registationRules(),

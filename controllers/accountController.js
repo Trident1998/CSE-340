@@ -121,5 +121,19 @@ async function buildAcountManagment(req, res, next) {
   req.flash("notice", "Please login.")
   res.redirect("/account/login")
 }
+
+/* ****************************************
+*  Veerify token
+* *************************************** */
+async function verifyToken(req, res, next) {
+  const token  = req.cookies.jwt || null;
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      res.status(401).json({ valid: false });
+    } else {
+      res.status(200).json({ valid: true });
+    }
+  });
+}
  
-  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAcountManagment }
+  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAcountManagment, verifyToken }
