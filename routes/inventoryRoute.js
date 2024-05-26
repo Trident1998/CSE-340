@@ -4,6 +4,7 @@ const router = new express.Router()
 const invController = require("../controllers/invController")
 const utilities = require("../utilities")
 const regValidate = require('../utilities/inventory-validation')
+const checkAuthority = require('../utilities/check-authority')
 
 // Route to build inventory by classification view
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
@@ -19,7 +20,7 @@ router.get("/delete/:inventoryId", invController.buildDeleteIventoryDeetailsByIn
 
 router.post("/delete", invController.deleteInventory)
 
-router.get("/", utilities.handleErrors(invController.buildManagement));
+router.get("/", checkAuthority, utilities.handleErrors(invController.buildManagement));
 
 router.get("/add-classification", utilities.handleErrors(invController.showAddClassification));
 
