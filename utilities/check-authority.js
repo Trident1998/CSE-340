@@ -26,6 +26,7 @@ const checkAuthority = async (req, res, next) => {
           errors: null,
         })
       }
+      next();
     });
 };
 

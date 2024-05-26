@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tools = document.querySelector('#tools');
-    verifyToken().then(isValid => {
-        if (isValid) {
+    verifyToken().then( result => {
+        if (result) {
           tools.innerHTML = `
-           <a href="account/account-management">Welcome Basic</a>
+           <a href="account/account-management">Welcome ${result.first_name}</a> |
           <a title="Click to log out" href="account/logout">Logout</a>`
         } else {
             tools.innerHTML = `<a title="Click to log in" href="/account/login">My Account</a>`
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
       if (response.ok) {
         const result = await response.json();
-        return result.valid;
+        return result;
       } else {
         return false;
       }

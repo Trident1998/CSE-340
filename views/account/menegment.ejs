@@ -1,2 +1,23 @@
-<h1>You're logged in</h1>
-<% title %>
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+        res.redirect('/')
+    } %>
+    
+    <% if (errors) { %>
+        <ul class="notice">
+       <% errors.array().forEach(error => { %>
+         <li><%= error.msg %></li>
+      <%  }) %>
+       </ul>
+      <% } %>
+    
+      <h2><%= greet %></h2>
+
+      <p>You're logged in!</p>
+      <a href="/account/update">Editt account information</a>
+
+      <% if (nonClient) { %>
+        <h3>Inventory Management</h3>
+        <a href="/inv">Manage inventory</a>
+        <% }  %>

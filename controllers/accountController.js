@@ -111,15 +111,22 @@ async function accountLogin(req, res) {
 * *************************************** */
 async function buildAcountManagment(req, res, next) {
   let nav = await utilities.getNav()
-  if(req.cookies.jwt) {
+  const token  = req.cookies.jwt || null;
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      req.flash("notice", "Please login.")
+      res.redirect("/account/login")
+    } else {
       res.render("./account/menegment", {
-    title: "Login",
-    nav,
-    errors: null,
-  })
-  }
-  req.flash("notice", "Please login.")
-  res.redirect("/account/login")
+        title: "Account Managment",
+        greet: `Welcome ${decoded.account_firstname}`,
+        nonClient: decoded.account_type != 'Client',
+        nav,
+        errors: null,
+      })
+    }
+  });
 }
 
 /* ****************************************
@@ -129,9 +136,9 @@ async function verifyToken(req, res, next) {
   const token  = req.cookies.jwt || null;
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) {
-      res.status(401).json({ valid: false });
+      res.status(401).json({ valid: false,});
     } else {
-      res.status(200).json({ valid: true });
+      res.status(200).json({ valid: true, first_name: decoded.account_firstname });
     }
   });
 }

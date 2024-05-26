@@ -12,19 +12,19 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 // Route to build inventory by classification view
 router.get("/detail/:inventoryId", utilities.handleErrors(invController.buildIventoryDeetailsByInventoryId));
 
-router.get("/edit/:inventoryId", utilities.handleErrors(invController.buildEditIventoryDeetailsByInventoryId));
+router.get("/edit/:inventoryId", checkAuthority, utilities.handleErrors(invController.buildEditIventoryDeetailsByInventoryId));
 
-router.post("/update", invController.updateInventory)
+router.post("/update", checkAuthority, invController.updateInventory)
 
-router.get("/delete/:inventoryId", invController.buildDeleteIventoryDeetailsByInventoryId)
+router.get("/delete/:inventoryId", checkAuthority, invController.buildDeleteIventoryDeetailsByInventoryId)
 
-router.post("/delete", invController.deleteInventory)
+router.post("/delete", checkAuthority, invController.deleteInventory)
 
 router.get("/", checkAuthority, utilities.handleErrors(invController.buildManagement));
 
-router.get("/add-classification", utilities.handleErrors(invController.showAddClassification));
+router.get("/add-classification", checkAuthority, utilities.handleErrors(invController.showAddClassification));
 
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+router.get("/getInventory/:classification_id", checkAuthority, utilities.handleErrors(invController.getInventoryJSON))
 
 router.post(
     "/add-classification", 
