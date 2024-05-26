@@ -10,6 +10,8 @@ router.get("/", utilities.handleErrors(accountController.buildAcountManagment));
 // Route to build inventory by classification view
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
+router.get("/logout", utilities.handleErrors(accountController.buildLogout));
+
 router.get("/register", utilities.handleErrors(accountController.buildRegister));
 
 router.get("/verify-token", utilities.handleErrors(accountController.verifyToken));

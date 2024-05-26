@@ -16,6 +16,10 @@ async function buildLogin(req, res, next) {
     })
   }
 
+async function buildLogout(req, res, next) {
+  res.cookie("jwt", "", { httpOnly: true, maxAge: 0 }).redirect("/");
+}
+
   async function buildRegister(req, res, next) {
     let nav = await utilities.getNav()
     res.render("account/register", {
@@ -243,5 +247,6 @@ async function updateAccountPassword(req, res) {
                     verifyToken, 
                     buildUpdateAccount, 
                     updateAccount,
-                    updateAccountPassword
+                    updateAccountPassword,
+                    buildLogout
                    }
