@@ -29,4 +29,7 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 )
 
+router.get("/update", utilities.handleErrors(accountController.buildUpdateAccount));
+
+
 module.exports = router;

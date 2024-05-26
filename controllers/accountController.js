@@ -142,5 +142,29 @@ async function verifyToken(req, res, next) {
     }
   });
 }
+
+/* ****************************************
+ *  Process login request
+ * ************************************ */
+async function buildUpdateAccount(req, res) {
+  let nav = await utilities.getNav()
+  const token  = req.cookies.jwt || null;
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decoded) => {
+    if (err) {
+      req.flash("notice", "Please login.")
+      res.redirect("/account/login")
+    } else {
+      res.render("./account/update-account", {
+        title: "Update Account",
+        nav,
+        errors: null,
+        account_firstname: decoded.account_firstname,
+        account_lastname: decoded.account_lastname,
+        account_email: decoded.account_email,
+      })
+    }
+  });
+}
  
-  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAcountManagment, verifyToken }
+  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAcountManagment, verifyToken, buildUpdateAccount }
