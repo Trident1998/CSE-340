@@ -9,37 +9,43 @@
   <% } %>
 
   <div class="form-container">    
-    <form action="/account/update" method="post" class="form">
+    <form action="/account/update" method="POST" >
         <h2>Account Update</h2>
-        <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" value="<%= account_firstname %>" required>
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" value="<%= account_lastname %>" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" value="<%= account_email %>" required>
-        </div>
+        <label for="account_firstname">First Name</label>
+        <input type="text" id="account_firstname" name="account_firstname" value="<%= locals.account_firstname || account_firstname %>" required>
+
+        <label for="account_lastname">Last Name</label>
+        <input type="text" id="account_lastname" name="account_lastname" value="<%= locals.account_lastname || account_lastname %>" required>
+
+        <label for="account_email">Email</label>
+        <input type="email" id="account_email" name="account_email"placeholder="Enter a valid email address"  value="<%= locals.account_email || account_email %>" required>
+
+        <input type="hidden" id="account_id" name="account_id" value="<%= locals.account_id || account_id %>">
+
         <button type="submit">Update Account</button>
     </form>
 
     <form action="/account/change-password" method="post" class="form">
         <h2>Change Password</h2>
-        <div class="form-group">
-            <label for="currentPassword">Current Password</label>
-            <input type="password" id="currentPassword" name="currentPassword" required>
-        </div>
-        <div class="form-group">
-            <label for="newPassword">New Password</label>
-            <input type="password" id="newPassword" name="newPassword" required>
-        </div>
-        <div class="form-group">
-            <label for="confirmPassword">Confirm New Password</label>
-            <input type="password" id="confirmPassword" name="confirmPassword" required>
-        </div>
+
+        <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</span> 
+        <label for="currentPassword">Current Password</label>
+        <input type="password" id="currentPassword" name="currentPassword" required 
+                   minlength="12" 
+                   pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+
+        <label for="newPassword">New Password</label>
+        <input type="password" id="newPassword" name="newPassword" required 
+                    minlength="12" 
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+
+        <label for="confirmPassword">Confirm New Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required 
+                    minlength="12" 
+                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$">
+
+        <input type="hidden" id="account_id" name="account_id" value="<%= locals.account_id || account_id %>">
+
         <button type="submit">Change Password</button>
     </form>
 </div>

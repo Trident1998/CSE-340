@@ -31,5 +31,18 @@ router.post(
 
 router.get("/update", utilities.handleErrors(accountController.buildUpdateAccount));
 
+router.post(
+  "/update",
+  regValidate.updatingRules(),
+  regValidate.checkRegUpdateData,
+  utilities.handleErrors(accountController.updateAccount)
+)
+
+router.post(
+  "/change-password",
+  regValidate.changePasswordRules(),
+  regValidate.checkChangePasswordData,
+  utilities.handleErrors(accountController.updateAccountPassword)
+)
 
 module.exports = router;

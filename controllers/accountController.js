@@ -162,9 +162,86 @@ async function buildUpdateAccount(req, res) {
         account_firstname: decoded.account_firstname,
         account_lastname: decoded.account_lastname,
         account_email: decoded.account_email,
+        account_id: decoded.account_id,
       })
     }
   });
 }
+
+/* ****************************************
+ *  Process update user data request
+ * ************************************ */
+async function updateAccount(req, res) {
+  let nav = await utilities.getNav()
+  const { account_firstname, account_lastname, account_email, account_id } = req.body
+  const updateResult = await accountModel.updateAccoount(account_firstname, account_lastname, account_email, account_id)
+
+  if (updateResult) {
+    const itemName = updateResult.make + " " + updateResult.model
+    req.flash("notice", `The ${itemName} was successfully updated.`)
+    res.redirect("/account/")
+  return
+  } else {
+    req.flash("notice", "Sorry, the updatee failed.")
+    res.status(501).render("account/update-account", {
+      title: "Update Account",
+      nav,
+      errors: null,
+      account_firstname: account_firstname,
+      account_lastname: account_lastname,
+      account_email: account_email,
+      account_id: account_id,
+    })
+  }
+ }
+
+ /* ****************************************
+ *  Process update user data request
+ * ************************************ */
+async function updateAccountPassword(req, res) {
+  let nav = await utilities.getNav()
+  const { confirmPassword, account_id } = req.body
+  
+  let hashedPassword
+  try {
+    hashedPassword = await bcrypt.hashSync(confirmPassword, 10)
+  } catch (error) {
+    req.flash("notice", 'Sorry, there was an error processing the registration.')
+    res.status(500).render("account/update-account", {
+      title: "Registration",
+      nav,
+      errors: null,
+    })
+  }
+
+  const updateResult = await accountModel.updateAccountPassword(hashedPassword, account_id)
+
+  if (updateResult) {
+    const itemName = updateResult.make + " " + updateResult.model
+    req.flash("notice", `The password was successfully updated.`)
+    res.redirect("/account/")
+  return
+  } else {
+    req.flash("notice", "Sorry, the updatee failed.")
+    res.status(501).render("account/update-account", {
+      title: "Update Account",
+      nav,
+      account_firstname: null,
+      account_lastname: null,
+      account_email: null,
+      errors: null,
+      account_id: account_id,
+    })
+  }
+ }
  
-  module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAcountManagment, verifyToken, buildUpdateAccount }
+  module.exports = { buildLogin, 
+                    buildRegister, 
+                    registerAccount, 
+                    accountLogin, 
+                    buildAcountManagment, 
+                    verifyToken, 
+                    buildUpdateAccount, 
+                    updateAccount,
+                    updateAccountPassword
+                   }
