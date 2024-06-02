@@ -2,8 +2,8 @@
 
 // Function to fetch both classifications and inventory data
 async function fetchAllData() {
-    await fetchData('classifications');
-    await fetchData('inventory');
+    fetchData('classifications');
+    fetchData('inventory');
 }
 
 // Function to fetch data from the third-party service
@@ -26,7 +26,6 @@ async function fetchData(fetchType) {
 }
 
 function buildTable(data, tableType) {
-    // Get the table container
     const table = tableType === 'classifications' ? document.querySelector('#classification') : document.querySelector('#inventory');
 
     if (!table) {
@@ -39,9 +38,9 @@ function buildTable(data, tableType) {
     let headers = [];
 
     if (tableType === 'classifications') {
-        headers = ['Classification Name', 'Creator First Name', 'Creator Last Name', 'Creator Email', '', ''];
+        headers = ['Classification Name', '', ''];
     } else {
-        headers = ['Classification Name', 'Creator First Name', 'Creator Last Name', 'Creator Email', 'Inventory Make', 'Inventory Model', 'Inventory Year', ''];
+        headers = ['Classification Name', 'Inventory Make', 'Inventory Model', 'Inventory Year', ''];
     }
 
     headers.forEach((headerText, index) => {
@@ -55,26 +54,19 @@ function buildTable(data, tableType) {
         data.forEach((item) => {
             const row = tbody.insertRow();
             row.insertCell(0).innerText = item.classification_name;
-            row.insertCell(1).innerText = item.account_firstname;
-            row.insertCell(2).innerText = item.account_lastname;
-            row.insertCell(3).innerText = item.account_email;
-            row.insertCell(4).innerHTML = `<a href="/inv/classification-approve/${item.classification_id}" title="Click to approve">Approve</a>`;
-            row.insertCell(5).innerHTML = `<a href="/inv/classification-reject/${item.classification_id}" title="Click to reject">Reject</a>`;
+            row.insertCell(1).innerHTML = `<a href="/inv/classification-approve/${item.classification_id}" title="Click to approve">Approve</a>`;
+            row.insertCell(2).innerHTML = `<a href="/inv/classification-reject/${item.classification_id}" title="Click to reject">Reject</a>`;
         });
     } else {
         data.forEach((item) => {
             const row = tbody.insertRow();
             row.insertCell(0).innerText = item.classification_name;
-            row.insertCell(1).innerText = item.account_firstname;
-            row.insertCell(2).innerText = item.account_lastname;
-            row.insertCell(3).innerText = item.account_email;
-            row.insertCell(4).innerText = item.inv_make;
-            row.insertCell(5).innerText = item.inv_model;
-            row.insertCell(6).innerText = item.inv_year;
-            row.insertCell(7).innerHTML = `<a href="/inv/inventory-review/${item.inv_id}" title="Click to review">Review</a>`;
+            row.insertCell(1).innerText = item.inv_make;
+            row.insertCell(2).innerText = item.inv_model;
+            row.insertCell(3).innerText = item.inv_year;
+            row.insertCell(4).innerHTML = `<a href="/inv/inventory-review/${item.inv_id}" title="Click to review">Review</a>`;
         });
     }
 }
 
-// Fetch data and build the table when the document is loaded
 document.addEventListener('DOMContentLoaded', fetchAllData);

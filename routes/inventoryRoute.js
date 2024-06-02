@@ -30,6 +30,16 @@ router.get("/get-unproved-classifications", checkAuthority, utilities.handleErro
 
 router.get("/get-unproved-inventory", checkAuthority, utilities.handleErrors(invController.getUnaprovedInventoryJSON))
 
+router.get("/classification-approve/:classification_id", checkAuthority, utilities.handleErrors(invController.approveClassification))
+
+router.get("/classification-reject/:classification_id", checkAuthority, utilities.handleErrors(invController.rejectClassification))
+
+router.get("/inventory-review/:inventoryId", checkAuthority, utilities.handleErrors(invController.reviewInventory))
+
+router.post(
+    "/inventory-review", 
+    utilities.handleErrors(invController.doActionForInventoryReview));
+
 router.post(
     "/add-classification", 
     regValidate.classificationRules(),

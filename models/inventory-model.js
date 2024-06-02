@@ -5,12 +5,20 @@ const pool = require("../database/")
  * ************************** */
 async function getClassifications(){
   return await pool.query(`
-  SELECT cl.classification_name, cl.classification_id
-	FROM classification cl
-	JOIN inventory inv
-		ON cl.classification_id = inv.classification_id
-	WHERE classification_approved = true AND inv_approved = true
-	ORDER BY classification_name`)
+  SELECT DISTINCT cl.classification_name, cl.classification_id
+FROM classification cl
+JOIN inventory inv
+    ON cl.classification_id = inv.classification_id
+WHERE cl.classification_approved = true AND inv.inv_approved = true
+ORDER BY cl.classification_name;`)
+}
+
+async function getApprovedClassifications(){
+  return await pool.query(`
+  SELECT DISTINCT cl.classification_name, cl.classification_id
+FROM classification cl
+WHERE cl.classification_approved = true
+ORDER BY cl.classification_name;`)
 }
 
 /* ***************************
@@ -21,7 +29,7 @@ async function addClassification(classification_name){
     const sql = "INSERT INTO classification (classification_name) VALUES ($1) RETURNING *"
     return await pool.query(sql, [classification_name])
   } catch (error) {
-    return error.message
+    console.error("addClassification error " + error)
   }
 }
 
@@ -39,7 +47,7 @@ async function getInventoryByClassificationId(classification_id) {
     )
     return data.rows
   } catch (error) {
-    console.error("getclassificationsbyid error " + error)
+    console.error("getInventoryByClassificationId error " + error)
   }
 }
 
@@ -50,19 +58,13 @@ async function getUnaprovedClassifications() {
   try {
     const data = await pool.query(
       `SELECT cl.classification_id, 
-              cl.classification_name, 
-              ac.account_id, 
-              ac.account_firstname,
-              ac.account_lastname, 
-              ac.account_email
+              cl.classification_name
       FROM classification AS cl
-        LEFT JOIN account AS ac
-        ON cl.account_id = ac.account_id 
       WHERE cl.classification_approved = false`
     )
     return data.rows
   } catch (error) {
-    console.error("getclassificationsbyid error " + error)
+    console.error("getUnaprovedClassifications error " + error)
   }
 }
 
@@ -73,9 +75,6 @@ async function getUnaprovedInventory() {
   try {
     const data = await pool.query(
       `SELECT cl.classification_name, 
-              ac.account_firstname,
-              ac.account_lastname, 
-              ac.account_email,
               inv.inv_id,
               inv.inv_make,
               inv.inv_model,
@@ -83,13 +82,75 @@ async function getUnaprovedInventory() {
     FROM inventory inv
     JOIN classification cl	
     ON cl.classification_id = inv.classification_id 
-            LEFT JOIN account AS ac
-          ON cl.account_id = ac.account_id 
-    WHERE inv_approved = false;`
+    WHERE inv_approved = false
+    ORDER BY classification_name, inv.inv_make, inv.inv_model, inv.inv_year;`
     )
     return data.rows
   } catch (error) {
-    console.error("getclassificationsbyid error " + error)
+    console.error("getUnaprovedInventory error " + error)
+  }
+}
+
+/* ***************************
+ *  Aspprove Classification
+ * ************************** */
+async function approveClassification(classification_id) {
+  try {
+    const data = await pool.query(
+      `UPDATE public.classification SET classification_approved = true, classification_approval_date = NOW()
+      WHERE classification_id = $1 
+      RETURNING *`,
+      [classification_id]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("approveClassification error " + error)
+  }
+}
+
+/* ***************************
+ *  Reject Classification
+ * ************************** */
+async function rejectClassification(classification_id) {
+  try {
+    const data = await pool.query(
+      `DELETE FROM public.classification WHERE classification_id = $1 RETURNING *`,
+      [classification_id]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("approveClassification error " + error)
+  }
+}
+/* ***************************
+ *  Aspprove Invantory
+ * ************************** */
+async function approveInvantory(inventoryId) {
+  try {
+    const data = await pool.query(
+      `UPDATE public.inventory SET inv_approved = true, inv_approved_date = NOW()
+      WHERE inv_id = $1 
+      RETURNING *`,
+      [inventoryId]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("approveClassification error " + error)
+  }
+}
+
+/* ***************************
+ *  Reject Invantory
+ * ************************** */
+async function rejectInvantory(inventoryId) {
+  try {
+    const data = await pool.query(
+      `DELETE FROM public.inventory WHERE inv_id = $1 RETURNING *`,
+      [inventoryId]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("approveClassification error " + error)
   }
 }
 
@@ -122,12 +183,12 @@ async function addInventory(classification_id, make, model, year, description, i
 /* ***************************
  *  Get all inventory deteils by inv_id
  * ************************** */
-async function getInventoryByInnventoryId(inv_id) {
+async function getInventoryByInnventoryId(inv_id, inv_approved = true) {
   try {
     const data = await pool.query(
       `SELECT * FROM public.inventory
-      WHERE inv_id = $1 AND inv_approved == true`,
-      [inv_id]
+      WHERE inv_id = $1 AND inv_approved = $2`,
+      [inv_id, inv_approved]
     )
     return data.rows[0]
   } catch (error) {
@@ -189,6 +250,7 @@ async function deleteInventory(inv_id) {
 
 
 module.exports = {getClassifications, 
+                  getApprovedClassifications,
                   getInventoryByClassificationId, 
                   getInventoryByInnventoryId, 
                   addClassification,
@@ -196,5 +258,9 @@ module.exports = {getClassifications,
                   updateInventory,
                   deleteInventory,
                   getUnaprovedClassifications, 
-                  getUnaprovedInventory 
+                  getUnaprovedInventory,
+                  approveClassification,
+                  rejectClassification,
+                  approveInvantory,
+                  rejectInvantory
                 };

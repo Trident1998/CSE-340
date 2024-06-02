@@ -24,14 +24,14 @@
   <a href="/inv">Manage inventory</a>
 <% }  %>
 
-<% if (isAdmin && (unaprovedClassaficationList || unaprovedInventoryList)) { %>
-  <% if (unaprovedClassaficationList) { %>
-  <h3>You have unaproved Classification</h3>
+<% if (isAdmin) { %>
+  <% if (unaprovedClassaficationList.length > 0) { %>
+  <h3>You have unapproved Classification</h3>
   <table class="tableDisplay" id="classification"></table>
   <% }  %>
 
-  <% if (unaprovedInventoryList) { %>
-    <h3>You have unaproved Inveentory</h3>
+  <% if (unaprovedInventoryList.length > 0) { %>
+    <h3>You have unapproved Inveentory</h3>
     <table class="tableDisplay" id="inventory"></table>
     <% }  %>
 

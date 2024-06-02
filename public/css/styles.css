@@ -377,7 +377,22 @@ input:required:valid {
   box-sizing: border-box;
   font-size: 16px;
   background-color: #f9f9f9;
-  resize: vertical; /* Allows vertical resize only */
+  resize: vertical; 
+  box-sizing: border-box;
+  overflow: hidden; 
+}
+
+.form-container div {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-container div button {
+  margin: 0 5px;
+}
+
+.form-container div button[value="reject"] {
+  background-color: #d9534f;
 }
 
 /* Basic styling for the select element */
@@ -411,17 +426,6 @@ input:required:valid {
 #classificationList:focus {
   border-color: #66afe9;
   box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
-}
-
-/* Styling the dropdown arrow */
-#classificationList::after {
-  content: '▼';
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: #999;
 }
 
 /* Position the select element relative to the arrow */
@@ -471,8 +475,8 @@ input:required:valid {
 
 .tableDisplay tbody td {
   padding: 10px;
-  text-align: left;
   border-right: 1px solid #ddd;
+  text-align: center;
 }
 
 /* Links styling */

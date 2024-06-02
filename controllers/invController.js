@@ -91,7 +91,7 @@ invCont.addClassification = async (req, res) => {
 
 invCont.showAddInventory = async (req, res) => {
   let nav = await utilities.getNav()
-  const classificationList = await utilities.buildClassificationList();
+  const classificationList = await utilities.buildApprovedClassificationList();
   const flashMessage = req.flash('message');
   const errors = req.flash('error');
 
@@ -207,6 +207,100 @@ invCont.getUnaprovedInventoryJSON = async (req, res, next) => {
     res.status(200).json(invData);
   } else {
     next(new Error("No data returned"))
+  }
+}
+
+/* ***************************
+ *  Approve Classification
+ * ************************** */
+invCont.approveClassification = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const data = await invModel.approveClassification(classification_id)
+  if (data) {
+    req.flash("notice", `You have approved the Classification "${data[0].classification_name}" successfully`)
+    res.status(200).redirect("/account");
+  } else {
+    req.flash("notice", `Approving of Classification "${data[0].classification_name}" was unsuccessfully`)
+    res.status(401).redirect("/account");
+  }
+}
+
+/* ***************************
+ *  Reject Classification
+ * ************************** */
+invCont.rejectClassification = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const data = await invModel.rejectClassification(classification_id)
+  if (data) {
+    req.flash("notice", `You have rejected the Classification "${data[0].classification_name}" successfully`)
+    res.status(200).redirect("/account");
+  } else {
+    req.flash("notice", `Rejecting of Classification "${data[0].classification_name}" was unsuccessfully`)
+    res.status(401).redirect("/account");
+  }
+}
+
+/* ***************************
+ *  Review Inventory
+ * ************************** */
+invCont.reviewInventory = async (req, res, next) => {
+  const inventoryId = parseInt(req.params.inventoryId)
+  let nav = await utilities.getNav()
+  const itemData = await invModel.getInventoryByInnventoryId(inventoryId, false)
+  
+  if (itemData) {
+    const classificationList = await utilities.buildClassificationList(itemData.classification_id)
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+    res.render("./inventory/review-inventory", {
+      title: "Review " + itemName,
+      nav,
+      classificationList: classificationList,
+      errors: null,
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_description: itemData.inv_description,
+      inv_image: itemData.inv_image,
+      inv_thumbnail: itemData.inv_thumbnail,
+      inv_price: itemData.inv_price,
+      inv_miles: itemData.inv_miles,
+      inv_color: itemData.inv_color,
+      classification_id: itemData.classification_id
+    })
+  } else {
+    next(new Error("No data returned"))
+  }
+}
+
+/* ***************************
+ *  Approve or reject inventory
+ * ************************** */
+invCont.doActionForInventoryReview = async (req, res, next) => {
+  let nav = await utilities.getNav()
+  const {
+    inv_id,
+    action,
+    make,
+    model
+  } = req.body
+
+  let updateResult = null;
+
+  if(action == "approve") {
+    updateResult = await invModel.approveInvantory(inv_id)
+  }
+  if(action == "reject") {
+    updateResult = await invModel.rejectInvantory(inv_id)
+  }
+
+  if (updateResult) {
+    const itemName = make + " " + model
+    req.flash("notice", `The ${itemName} was successfully proccesed.`)
+    res.redirect("/account")
+  } else {
+    req.flash("notice", `The ${itemName} was unsuccessfully proccesed.`)
+    res.redirect("/account")
   }
 }
 
