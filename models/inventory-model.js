@@ -4,7 +4,13 @@ const pool = require("../database/")
  *  Get all classification data
  * ************************** */
 async function getClassifications(){
-  return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
+  return await pool.query(`
+  SELECT cl.classification_name, cl.classification_id
+	FROM classification cl
+	JOIN inventory inv
+		ON cl.classification_id = inv.classification_id
+	WHERE classification_approved = true AND inv_approved = true
+	ORDER BY classification_name`)
 }
 
 /* ***************************
@@ -28,8 +34,58 @@ async function getInventoryByClassificationId(classification_id) {
       `SELECT * FROM public.inventory AS i 
       JOIN public.classification AS c 
       ON i.classification_id = c.classification_id 
-      WHERE i.classification_id = $1`,
+      WHERE i.classification_id = $1 AND inv_approved = true`,
       [classification_id]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("getclassificationsbyid error " + error)
+  }
+}
+
+/* ***************************
+ *  Get all Unaproved Classifications
+ * ************************** */
+async function getUnaprovedClassifications() {
+  try {
+    const data = await pool.query(
+      `SELECT cl.classification_id, 
+              cl.classification_name, 
+              ac.account_id, 
+              ac.account_firstname,
+              ac.account_lastname, 
+              ac.account_email
+      FROM classification AS cl
+        LEFT JOIN account AS ac
+        ON cl.account_id = ac.account_id 
+      WHERE cl.classification_approved = false`
+    )
+    return data.rows
+  } catch (error) {
+    console.error("getclassificationsbyid error " + error)
+  }
+}
+
+/* ***************************
+ *  Get all Unaproved Inventory
+ * ************************** */
+async function getUnaprovedInventory() {
+  try {
+    const data = await pool.query(
+      `SELECT cl.classification_name, 
+              ac.account_firstname,
+              ac.account_lastname, 
+              ac.account_email,
+              inv.inv_id,
+              inv.inv_make,
+              inv.inv_model,
+              inv.inv_year
+    FROM inventory inv
+    JOIN classification cl	
+    ON cl.classification_id = inv.classification_id 
+            LEFT JOIN account AS ac
+          ON cl.account_id = ac.account_id 
+    WHERE inv_approved = false;`
     )
     return data.rows
   } catch (error) {
@@ -70,7 +126,7 @@ async function getInventoryByInnventoryId(inv_id) {
   try {
     const data = await pool.query(
       `SELECT * FROM public.inventory
-      WHERE inv_id = $1`,
+      WHERE inv_id = $1 AND inv_approved == true`,
       [inv_id]
     )
     return data.rows[0]
@@ -132,4 +188,13 @@ async function deleteInventory(inv_id) {
 }
 
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByInnventoryId, addClassification, addInventory, updateInventory, deleteInventory };
+module.exports = {getClassifications, 
+                  getInventoryByClassificationId, 
+                  getInventoryByInnventoryId, 
+                  addClassification,
+                  addInventory,
+                  updateInventory,
+                  deleteInventory,
+                  getUnaprovedClassifications, 
+                  getUnaprovedInventory 
+                };

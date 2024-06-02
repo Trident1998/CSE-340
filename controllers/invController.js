@@ -187,6 +187,30 @@ invCont.getInventoryJSON = async (req, res, next) => {
 }
 
 /* ***************************
+ *  Return Unproved Classification As JSON
+ * ************************** */
+invCont.getUnaprovedClassificationsJSON = async (req, res, next) => {
+  const invData = await invModel.getUnaprovedClassifications()
+  if (invData) {
+    res.status(200).json(invData);
+  } else {
+    next(new Error("No data returned"))
+  }
+}
+
+/* ***************************
+ *  Return Unproved Inventory As JSON
+ * ************************** */
+invCont.getUnaprovedInventoryJSON = async (req, res, next) => {
+  const invData = await invModel.getUnaprovedInventory()
+  if (invData) {
+    res.status(200).json(invData);
+  } else {
+    next(new Error("No data returned"))
+  }
+}
+
+/* ***************************
  *  Update Inventory Data
  * ************************** */
 invCont.updateInventory = async function (req, res, next) {

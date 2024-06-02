@@ -440,7 +440,7 @@ input:required:valid {
 }
 
 /* Basic table styling */
-#inventoryDisplay {
+.tableDisplay {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
@@ -448,35 +448,35 @@ input:required:valid {
 }
 
 /* Table header styling */
-#inventoryDisplay thead {
+.tableDisplay thead {
   background-color: #f4f4f4;
   border-bottom: 2px solid #ddd;
 }
 
-#inventoryDisplay thead th {
+.tableDisplay thead th {
   padding: 10px;
   text-align: left;
   font-weight: bold;
   border-right: 1px solid #ddd;
 }
 
-#inventoryDisplay thead td {
+.tableDisplay thead td {
   border-right: 1px solid #ddd;
 }
 
 /* Table body styling */
-#inventoryDisplay tbody tr {
+.tableDisplay tbody tr {
   border-bottom: 1px solid #ddd;
 }
 
-#inventoryDisplay tbody td {
+.tableDisplay tbody td {
   padding: 10px;
   text-align: left;
   border-right: 1px solid #ddd;
 }
 
 /* Links styling */
-#inventoryDisplay tbody a {
+.tableDisplay tbody a {
   color: #3498db;
   text-decoration: none;
   padding: 5px 10px;
@@ -484,28 +484,35 @@ input:required:valid {
   transition: background-color 0.3s ease;
 }
 
-#inventoryDisplay tbody a[title="Click to update"] {
+.tableDisplay tbody a[title="Click to update"],
+.tableDisplay tbody a[title="Click to review"] {
   background-color: #f0ad4e;
   color: #fff;
 }
 
-#inventoryDisplay tbody a[title="Click to delete"] {
+.tableDisplay tbody a[title="Click to delete"],
+.tableDisplay tbody a[title="Click to reject"] {
   background-color: #d9534f;
   color: #fff;
 }
 
-#inventoryDisplay tbody a:hover {
+.tableDisplay tbody a[title="Click to approve"] {
+  background-color: #006400;
+  color: #fff;
+}
+
+.tableDisplay tbody a:hover {
   background-color: #2980b9;
   color: #fff;
 }
 
 /* Alternate row coloring */
-#inventoryDisplay tbody tr:nth-child(even) {
+.tableDisplay tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
 /* Hover effect for table rows */
-#inventoryDisplay tbody tr:hover {
+.tableDisplay tbody tr:hover {
   background-color: #f1f1f1;
 }
 

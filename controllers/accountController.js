@@ -1,5 +1,6 @@
 const utilities = require("../utilities")
 const accountModel = require("../models/account-model")
+const invModel = require("../models/inventory-model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
@@ -122,10 +123,17 @@ async function buildAcountManagment(req, res, next) {
       req.flash("notice", "Please login.")
       res.redirect("/account/login")
     } else {
+      const unaprovedClassaficationList = invModel.getUnaprovedClassifications();
+      const unaprovedInventoryList = invModel.getUnaprovedInventory();
+
+
       res.render("./account/menegment", {
         title: "Account Managment",
         greet: `Welcome ${decoded.account_firstname}`,
         nonClient: decoded.account_type != 'Client',
+        isAdmin: decoded.account_type == 'Admin',
+        unaprovedClassaficationList: unaprovedClassaficationList,
+        unaprovedInventoryList: unaprovedInventoryList,
         nav,
         errors: null,
       })

@@ -1,25 +1,40 @@
 <% if (title) { %>
-    <h1><%= title %></h1>
-    <% } else {
-        res.redirect('/')
-    } %>
-    
-    <%- messages() %>
+  <h1><%= title %></h1>
+  <% } else {
+      res.redirect('/')
+  } %>
+  
+  <%- messages() %>
 
-    <% if (errors) { %>
-        <ul class="notice">
-       <% errors.array().forEach(error => { %>
-         <li><%= error.msg %></li>
-      <%  }) %>
-       </ul>
-      <% } %>
-    
-      <h2><%= greet %></h2>
+<% if (errors) { %>
+  <ul class="notice">
+  <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+<%  }) %>
+  </ul>
+<% } %>
 
-      <p>You're logged in!</p>
-      <a href="/account/update">Editt account information</a>
+<h2><%= greet %></h2>
 
-      <% if (nonClient) { %>
-        <h3>Inventory Management</h3>
-        <a href="/inv">Manage inventory</a>
-        <% }  %>
+<p>You're logged in!</p>
+<a href="/account/update">Editt account information</a>
+
+<% if (nonClient) { %>
+  <h3>Inventory Management</h3>
+  <a href="/inv">Manage inventory</a>
+<% }  %>
+
+<% if (isAdmin && (unaprovedClassaficationList || unaprovedInventoryList)) { %>
+  <% if (unaprovedClassaficationList) { %>
+  <h3>You have unaproved Classification</h3>
+  <table class="tableDisplay" id="classification"></table>
+  <% }  %>
+
+  <% if (unaprovedInventoryList) { %>
+    <h3>You have unaproved Inveentory</h3>
+    <table class="tableDisplay" id="inventory"></table>
+    <% }  %>
+
+  <script src="../../js/account.js"></script>
+<% }  %>
+
