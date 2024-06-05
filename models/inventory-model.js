@@ -21,6 +21,18 @@ WHERE cl.classification_approved = true
 ORDER BY cl.classification_name;`)
 }
 
+async function getClassificationsById(classification_id){
+  try {
+    const sql = `SELECT DISTINCT cl.classification_name
+    FROM classification cl
+    WHERE cl.classification_id = $1;`
+    const data =  await pool.query(sql, [classification_id])
+    return data.rows;
+  } catch (error) {
+    console.error("addClassification error " + error)
+  }
+}
+
 /* ***************************
  *  Add classification data
  * ************************** */
@@ -262,5 +274,6 @@ module.exports = {getClassifications,
                   approveClassification,
                   rejectClassification,
                   approveInvantory,
-                  rejectInvantory
+                  rejectInvantory,
+                  getClassificationsById
                 };

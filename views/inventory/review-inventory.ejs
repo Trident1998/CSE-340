@@ -12,8 +12,8 @@
 
 <div class="form-container">
     <form name="inventoryForm" action="/inv/inventory-review" method="POST">
-        <label for="classificationList">Classification:</label>
-        <%- classificationList %>
+        <label for="classification">Classification:</label>
+        <input type="text" id="classification" name="classification"  value="<%=classification%>" readonly>
 
         <label for="make">Make:</label>
         <input type="text" id="make" name="make"  value="<%=inv_make%>" readonly>

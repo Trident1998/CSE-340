@@ -249,12 +249,12 @@ invCont.reviewInventory = async (req, res, next) => {
   const itemData = await invModel.getInventoryByInnventoryId(inventoryId, false)
   
   if (itemData) {
-    const classificationList = await utilities.buildClassificationList(itemData.classification_id)
+    const classificationData = await invModel.getClassificationsById(itemData.classification_id)
+    const classification = classificationData[0].classification_name
     const itemName = `${itemData.inv_make} ${itemData.inv_model}`
     res.render("./inventory/review-inventory", {
       title: "Review " + itemName,
       nav,
-      classificationList: classificationList,
       errors: null,
       inv_id: itemData.inv_id,
       inv_make: itemData.inv_make,
@@ -266,7 +266,8 @@ invCont.reviewInventory = async (req, res, next) => {
       inv_price: itemData.inv_price,
       inv_miles: itemData.inv_miles,
       inv_color: itemData.inv_color,
-      classification_id: itemData.classification_id
+      classification_id: itemData.classification_id,
+      classification: classification
     })
   } else {
     next(new Error("No data returned"))
